@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="icon" href="../favicon.ico" />
+    <link rel="stylesheet" href="/styles.css" />
+
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Fontawesome -->
+    <script
+      src="https://kit.fontawesome.com/fa1738c9d8.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <title>Brookdale Book Exchange - Register</title>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="/"><i class="fas fa-home"></i></a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <form action="/register" method="GET">
+            <button class="btn btn-dark">Register</button>
+          </form>
+          <form action="/login" method="GET">
+            <button class="btn btn-dark">Login</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container" id="register">
+      <p class="display-4">Register</p>
+      <% regErrors.forEach(function(message) { %>
+      <div class="alert alert-danger">
+        <%= message %>
+      </div>
+      <% }) %>
+      <form action="/registerFunction" method="POST" id="registration-form">
+        <div class="form-group">
+          <label for="fname-register" class="text-muted mb-1"
+            ><small>First Name</small></label
+          >
+          <input
+            name="fname"
+            id="fname-register"
+            class="form-control"
+            type="text"
+            placeholder="First Name"
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label for="lname-register" class="text-muted mb-1"
+            ><small>Last Name</small></label
+          >
+          <input
+            name="lname"
+            id="lname-register"
+            class="form-control"
+            type="text"
+            placeholder="Last Name"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="email-register" class="text-muted mb-1"
+            ><small>Email</small></label
+          >
+          <input
+            name="email"
+            id="email-register"
+            class="form-control"
+            type="text"
+            placeholder="you@my.brookdalecc.edu"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password-register" class="text-muted mb-1"
+            ><small>Password</small></label
+          >
+          <input
+            name="password"
+            id="password-register"
+            class="form-control"
+            type="password"
+            placeholder="Create a password"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-info">
+          Register
+        </button>
+      </form>
+    </div>
+  </body>
+</html>
