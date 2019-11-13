@@ -16,6 +16,11 @@ let sessionOptions = session({
 app.use(sessionOptions); // allows login sessions - saves to database
 app.use(flash()); // for page alerts
 
+app.use(function(req, res, next) {
+  res.locals.user = req.session.user;
+  next();
+});
+
 const router = require("./router");
 
 //allow express to accept and use data from forms/json objects

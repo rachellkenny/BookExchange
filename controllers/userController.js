@@ -5,14 +5,9 @@ const User = require("../models/User");
 ///Functions that render the pages
 exports.landing = function(req, res) {
   if (req.session.user) {
-    //directs to home page if logged in
-    res.render("home", {
-      email: req.session.user.email,
-      fname: req.session.user.fname
-    });
+    res.render("home");
   } else {
-    //landing page if not logged in
-    res.render("landing");
+    res.render("landing", { errors: req.flash("errors") });
   }
 };
 exports.registerPage = function(req, res) {
@@ -46,7 +41,8 @@ exports.loginFunction = function(req, res) {
       req.session.user = {
         email: user.data.email,
         fname: result.fname,
-        lname: result.lname
+        lname: result.lname,
+        _id: result._id
       };
       req.session.save(function() {
         res.redirect("/");
