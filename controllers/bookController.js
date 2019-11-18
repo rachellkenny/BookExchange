@@ -36,12 +36,20 @@ exports.search = function(req, res) {
   }
 };
 
-// to view single book
-exports.viewBook = async function(req, res) {
-  try {
-    let book = await Book.findBookById(req.params.id);
-    res.render("searchResults", { book: book });
-  } catch {
-    res.send("Page not found.");
+exports.searchResults = function(req, res) {
+  if (req.session.user) {
+    res.render("searchresults");
+  } else {
+    res.render("landing");
   }
 };
+
+// // to view single book
+// exports.viewBook = async function(req, res) {
+//   try {
+//     let book = await Book.findBookById(req.params.id);
+//     res.render("searchResults", { book: book });
+//   } catch {
+//     res.send("Page not found.");
+//   }
+// };

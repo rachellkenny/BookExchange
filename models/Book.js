@@ -40,6 +40,18 @@ Book.prototype.addFunction = function() {
   });
 };
 
+// Book.prototype.findAll = function() {
+//   return new Promise((resolve, reject) => {
+//     booksCollection.find({}).toArray(function(err, res) {
+//       if (err) throw err;
+
+//       for (i = 0; i < res.length; i++) {
+//         console.log(res[i]);
+//       }
+//     });
+//   });
+// };
+
 Book.findBookById = function(id) {
   return new Promise(async function(resolve, reject) {
     if (!ObjectID.isValid(id)) {
@@ -54,4 +66,5 @@ Book.findBookById = function(id) {
     }
   });
 };
+
 module.exports = Book;

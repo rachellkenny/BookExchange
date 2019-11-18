@@ -7,11 +7,18 @@ const bookController = require("./controllers/bookController");
 router.get("/", userController.landing);
 router.get("/register", userController.registerPage);
 router.get("/login", userController.loginPage);
+router.get("/404", userController.errorpage);
+router.get(
+  "/profile/:email",
+  userController.ifUserExists,
+  userController.profileScreen
+);
 //get requests for book-related pages
 router.get("/mybooks", bookController.mybooks);
 router.get("/add", bookController.add);
 router.get("/search", bookController.search);
-router.get("/book", bookController.viewBook);
+router.get("/searchResults", bookController.searchResults);
+// router.get("/book", bookController.viewBook);
 
 //post requests for user functions
 router.post("/registerFunction", userController.registerFunction);

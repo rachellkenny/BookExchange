@@ -1,14 +1,9 @@
 <%- include('includes/loggedInNav') %>
 
-    <div class="container" id="home">
-      <p class="display-4">Brookdale Book Exchange</p>
-      <p class="lead">Hi, <strong><%= user.fname %>!</strong></p>
-      <form action="/search" method="GET">
-        <button type="submit" class="btn btn-info">Search for Books</button>
-      </form>
-      <br /><br />
-      <p class="lead">Books Currently Available</p>
-      <div id="booksAvail">
+    <div class="container" id="searchResultspage">
+      <p class="display-4">Search for Books</p>
+      <p class="lead">Search Results</p>
+      <div id="searchResults">
         <table class="table">
           <thead class="thead-dark">
             <tr>

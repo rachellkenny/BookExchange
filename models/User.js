@@ -72,4 +72,29 @@ User.prototype.login = function() {
     );
   });
 };
+
+User.findByEmail = function(email) {
+  return new Promise(function(resolve, reject) {
+    usersCollection
+      .findOne({ email: email })
+      .then(function(userDoc) {
+        if (userDoc) {
+          userDoc = new User(userDoc, true);
+          userDoc = {
+            _id: userDoc.data._id,
+            email: userDoc.data.email,
+            fname: userDoc.data.fname,
+            lname: userDoc.data.lname
+          };
+          resolve();
+        } else {
+          reject();
+        }
+      })
+      .catch(function() {
+        reject();
+      });
+  });
+};
+
 module.exports = User;

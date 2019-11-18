@@ -61,3 +61,28 @@ exports.logout = function(req, res) {
     res.redirect("/");
   });
 };
+
+exports.errorpage = function(req, res) {
+  if (req.session.user) {
+    res.render("404");
+  } else {
+    res.render("landing");
+  }
+};
+
+exports.ifUserExists = function(req, res, next) {
+  User.findByEmail(req.params.email)
+    .then(function(userDocument) {
+      req.profileUser = userDocument;
+      next();
+    })
+    .catch(function() {
+      res.render("404");
+    });
+};
+
+exports.profileScreen = function(req, res) {
+  res.render("profile", {
+    profileName: req.profileUser.fname + " " + req.profileUser.lname
+  });
+};
