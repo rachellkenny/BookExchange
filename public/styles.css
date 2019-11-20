@@ -15,3 +15,14 @@
   -o-background-size: cover;
   background-size: cover;
 }
+
+.btn-light:hover,
+.btn-dark:hover {
+  background-color: #17a2b8 !important;
+  color: #ffffff !important;
+}
+
+.navbtn:hover {
+  background-color: #17a2b8;
+  color: #ffffff;
+}

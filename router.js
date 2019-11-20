@@ -18,7 +18,7 @@ router.get("/mybooks", bookController.mybooks);
 router.get("/add", bookController.add);
 router.get("/search", bookController.search);
 router.get("/searchResults", bookController.searchResults);
-// router.get("/book", bookController.viewBook);
+router.get("/book/:id", bookController.viewSingle);
 
 //post requests for user functions
 router.post("/registerFunction", userController.registerFunction);

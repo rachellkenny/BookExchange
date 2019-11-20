@@ -1,0 +1,55 @@
+<%- include('includes/loggedInNav') %>
+
+    <div class="container py-md-5 container--narrow">
+      <div class="d-flex justify-content-between">
+          <table class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">ISBN</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Author</th>
+                  <th scope="col">Subject</th>
+                  <th scope="col">Course</th>
+                  <th scope="col">User</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row"><%= book.isbn %></th>
+                  <td><%= book.title %></td>
+                  <td><%= book.author %></td>
+                  <td><%= book.subject %></td>
+                  <td><% book.course %></td>
+                  <td><%= book.user %></td>
+                </tr>
+              </tbody>
+            </table>
+        <!-- <h2><%= book.title %></h2>
+        <span class="pt-2">
+          <a
+            href="#"
+            class="text-primary mr-2"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Edit"
+            ><i class="fas fa-edit"></i
+          ></a>
+          <form class="delete-post-form d-inline" action="#" method="POST">
+            <button
+              class="delete-post-button text-danger"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Delete"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+          </form>
+        </span>
+      </div>
+
+      <div class="body-content">
+    <%= book.body %> -->
+      </div>
+    </div>
+  </body>
+</html>

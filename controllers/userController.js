@@ -1,4 +1,4 @@
-//This controller handles user registration, login, profile page
+//This controller handles user registration, login, profile pages
 
 const User = require("../models/User");
 
@@ -72,8 +72,8 @@ exports.errorpage = function(req, res) {
 
 exports.ifUserExists = function(req, res, next) {
   User.findByEmail(req.params.email)
-    .then(function(userDocument) {
-      req.profileUser = userDocument;
+    .then(function(userDoc) {
+      req.profileUser = userDoc;
       next();
     })
     .catch(function() {
@@ -82,7 +82,10 @@ exports.ifUserExists = function(req, res, next) {
 };
 
 exports.profileScreen = function(req, res) {
-  res.render("profile", {
-    profileName: req.profileUser.fname + " " + req.profileUser.lname
-  });
+  res.render(
+    "profile"
+    // , {
+    //   profileName: req.profileUser.fname + " " + req.profileUser.lname
+    // }
+  );
 };

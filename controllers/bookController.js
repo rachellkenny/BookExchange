@@ -1,4 +1,4 @@
-//This controller handles book search, add function, inventory data
+//This controller handles book search, add function, delete function, inventory data
 const Book = require("../models/Book");
 
 exports.mybooks = function(req, res) {
@@ -21,7 +21,7 @@ exports.addFunction = function(req, res) {
   book
     .addFunction()
     .then(function() {
-      res.send("Book Added");
+      res.render("add");
     })
     .catch(function(errors) {
       res.send(errors);
@@ -44,12 +44,12 @@ exports.searchResults = function(req, res) {
   }
 };
 
-// // to view single book
-// exports.viewBook = async function(req, res) {
-//   try {
-//     let book = await Book.findBookById(req.params.id);
-//     res.render("searchResults", { book: book });
-//   } catch {
-//     res.send("Page not found.");
-//   }
-// };
+// to view single book
+exports.viewSingle = async function(req, res) {
+  try {
+    let book = await Book.findSingleById(req.params.id);
+    res.render("singlebook", { book: book });
+  } catch {
+    res.render("404");
+  }
+};
