@@ -64,7 +64,12 @@ User.prototype.login = function() {
           attemptedEmail &&
           bcrypt.compareSync(this.data.password, attemptedEmail.password)
         ) {
-          resolve({ fname: attemptedEmail.fname, lname: attemptedEmail.lname });
+          resolve({
+            fname: attemptedEmail.fname,
+            lname: attemptedEmail.lname,
+            email: attemptedEmail.email,
+            _id: attemptedEmail._id
+          });
         } else {
           reject("Invalid email or password.");
         }
@@ -81,12 +86,12 @@ User.findByEmail = function(email) {
         if (userDoc) {
           userDoc = new User(userDoc, true);
           userDoc = {
-            _id: userDoc.data._id,
+            userid: userDoc.data._id,
             email: userDoc.data.email,
             fname: userDoc.data.fname,
             lname: userDoc.data.lname
           };
-          resolve();
+          resolve(userDoc);
         } else {
           reject();
         }

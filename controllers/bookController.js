@@ -5,14 +5,14 @@ exports.mybooks = function(req, res) {
   if (req.session.user) {
     res.render("mybooks");
   } else {
-    res.render("landing");
+    res.render("mustbeloggedin");
   }
 };
 exports.add = function(req, res) {
   if (req.session.user) {
-    res.render("add");
+    res.render("add", { errors: req.flash("errors") });
   } else {
-    res.render("landing");
+    res.render("mustbeloggedin");
   }
 };
 
@@ -21,18 +21,25 @@ exports.addFunction = function(req, res) {
   book
     .addFunction()
     .then(function() {
-      res.render("add");
+      res.render("bookadded");
     })
-    .catch(function(errors) {
-      res.send(errors);
+    .catch(function(err) {
+      req.flash("errors", err);
+      req.session.save(function() {
+        res.redirect("/add");
+      });
     });
+};
+
+exports.bookadded = function(req, res) {
+  res.render("bookadded");
 };
 
 exports.search = function(req, res) {
   if (req.session.user) {
     res.render("search");
   } else {
-    res.render("landing");
+    res.render("mustbeloggedin");
   }
 };
 
@@ -40,7 +47,7 @@ exports.searchResults = function(req, res) {
   if (req.session.user) {
     res.render("searchresults");
   } else {
-    res.render("landing");
+    res.render("mustbeloggedin");
   }
 };
 

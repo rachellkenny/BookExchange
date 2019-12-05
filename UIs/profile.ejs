@@ -1,30 +1,25 @@
 <%- include('includes/loggedInNav') %>
 
   <div class="container py-md-5 container--narrow">
-    <h2> TestName
-      <form class="ml-2 d-inline" action="#" method="POST">
+    <!-- <h2> <%= fname %>&nbsp;<%= lname %> -->
+      <form class="ml-2 d-inline" action="mailto: <%= email %>" method="POST">
         <button class="btn btn-info">Message</button>
-        <!-- <button class="btn btn-danger btn-sm">Stop Following <i class="fas fa-user-times"></i></button> -->
+        <button class="btn btn-danger btn-sm">Stop Following <i class="fas fa-user-times"></i></button>
       </form>
-    </h2>
+    <!-- </h2>
+    <p><a href = "mailto: <%= email %>"><%= email %></a></p> -->
+    
   
     <div class="profile-nav nav nav-tabs pt-2 mb-4">
       <a href="#" class="profile-nav-link nav-item nav-link active">Posts: 3</a>
     </div>
   
     <div class="list-group">
-      <a href="/post/5c3af3dcc7d0ad0004e53b3d" class="list-group-item list-group-item-action">
-        
-        <strong>Example Post #1</strong> on 0/13/2019
-      </a>
-      <a href="/post/5c3af3dcc7d0ad0004e53b3d" class="list-group-item list-group-item-action">
-        
-        <strong>Example Post #2</strong> on 0/13/2019
-      </a>
-      <a href="/post/5c3af3dcc7d0ad0004e53b3d" class="list-group-item list-group-item-action">
-        
-        <strong>Example Post #3</strong> on 0/13/2019
-      </a>
+      <!-- <% books.forEach%(function(books){ %>
+        <a href="/post/<%= book.id %>>" class="list-group-item list-group-item-action">
+          <strong><%= book.title %>></strong>
+        </a>
+      <% }) %> -->
     </div>
   </div>
 </body>

@@ -1,13 +1,14 @@
 //This controller handles user registration, login, profile pages
 
 const User = require("../models/User");
+const Book = require("../models/Book");
 
 ///Functions that render the pages
 exports.landing = function(req, res) {
   if (req.session.user) {
     res.render("home");
   } else {
-    res.render("landing", { errors: req.flash("errors") });
+    res.render("landing");
   }
 };
 exports.registerPage = function(req, res) {
@@ -44,6 +45,7 @@ exports.loginFunction = function(req, res) {
         lname: result.lname,
         _id: result._id
       };
+      console.log(req.session.user.id);
       req.session.save(function() {
         res.redirect("/");
       });
@@ -70,6 +72,10 @@ exports.errorpage = function(req, res) {
   }
 };
 
+exports.pleaselogin = function(req, res) {
+  res.render("mustbeloggedin");
+};
+
 exports.ifUserExists = function(req, res, next) {
   User.findByEmail(req.params.email)
     .then(function(userDoc) {
@@ -82,10 +88,17 @@ exports.ifUserExists = function(req, res, next) {
 };
 
 exports.profileScreen = function(req, res) {
-  res.render(
-    "profile"
-    // , {
-    //   profileName: req.profileUser.fname + " " + req.profileUser.lname
-    // }
-  );
+  //find books by user id to display personal inventory
+  Book.findByUserId(req.profileUser._id)
+    .then(function(books) {
+      res.render("profile", {
+        books: books,
+        fname: req.profileUser.fname,
+        lname: req.profileUser.lname,
+        email: req.profileUser.email
+      });
+    })
+    .catch(function() {
+      res.render("404");
+    });
 };

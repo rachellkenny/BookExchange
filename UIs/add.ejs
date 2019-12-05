@@ -2,6 +2,11 @@
 
     <div class="container" id="add">
       <p class="display-4">Add a Book</p>
+      <% errors.forEach(function(message) { %>
+        <div class="alert alert-danger">
+          <%= message %>
+        </div>
+        <% }) %>
       <form action="/addFunction" method="POST" id="add-book-form">
         <div class="form-group">
           <label for="isbn" class="text-muted mb-1"><small>ISBN</small></label>

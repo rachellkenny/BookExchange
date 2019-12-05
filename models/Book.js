@@ -8,25 +8,31 @@ const User = require("./User");
 let Book = function(data, userid) {
   this.data = data;
   this.errors = [];
-  this.alerts = [];
   this.userid = userid;
 };
 
 Book.prototype.validate = function() {
   if (this.data.title == "") {
-    this.errors.push("Please add a title.");
+    this.errors.push("Please add a title");
   }
 };
 
-Book.prototype.getAuthor = function() {
-  this.data.user = ObjectID(this.userid);
+Book.prototype.cleanup = function() {
+  this.data = {
+    isbn: this.data.isbn.trim(),
+    title: this.data.title.trim(),
+    author: this.data.author.trim(),
+    subject: this.data.subject,
+    course: this.data.course.trim(),
+    user: ObjectID(this.userid)
+  };
 };
 
 //Add book to database
 Book.prototype.addFunction = function() {
   return new Promise((resolve, reject) => {
     this.validate();
-    this.getAuthor();
+    this.cleanup();
     if (this.errors.length == 0) {
       booksCollection
         .insertOne(this.data)
@@ -41,6 +47,8 @@ Book.prototype.addFunction = function() {
     }
   });
 };
+
+// Attempted to display all from collection. Did not work.
 
 // Book.prototype.findAll = function() {
 //   return new Promise((resolve, reject) => {
@@ -62,8 +70,8 @@ Book.findSingleById = function(id) {
       reject();
       return;
     }
-    let books = await //aggregate allows multiple operations to be performed on database -- in this case, find book AND find user by id
-    booksCollection
+
+    let books = await booksCollection
       .aggregate([
         { $match: { _id: new ObjectID(id) } },
         {
@@ -71,7 +79,7 @@ Book.findSingleById = function(id) {
             from: "users",
             localField: "user",
             foreignField: "_id",
-            as: "userOfBook"
+            as: "userDoc"
           }
         },
         {
@@ -81,26 +89,24 @@ Book.findSingleById = function(id) {
             author: 1,
             subject: 1,
             course: 1,
-            user: 1
-            // user: { $arrayElemAt: [$userOfBook, 0] }
+            user: { $arrayElemAt: ["$userDoc", 0] }
           }
         }
       ])
       .toArray();
 
-    // books = books.map(function(book) {
-    //   book.user = {
-    //     fname: book.user.fname,
-    //     lname: book.user.lname,
-    //     email: book.user.email
-    //   };
-    //   return book;
-    // });
+    books = books.map(function(book) {
+      book.user = {
+        fname: book.user.fname,
+        lname: book.user.lname,
+        email: book.user.email
+      };
+      return book;
+    });
 
     if (books.length) {
       resolve(books[0]);
       console.log(books[0]);
-      //console.log(userOfBook[0]);
     } else {
       reject();
     }
