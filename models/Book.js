@@ -113,4 +113,48 @@ Book.findSingleById = function(id) {
   });
 };
 
+Book.findByUserId = function(userid) {
+  return new Promise(async function(resolve, reject) {
+    let books = await booksCollection
+      .aggregate([
+        { $match: { _id: new ObjectID(userid) } },
+        {
+          $lookup: {
+            from: "users",
+            localField: "user",
+            foreignField: "_id",
+            as: "userDoc"
+          }
+        },
+        {
+          $project: {
+            isbn: 1,
+            title: 1,
+            author: 1,
+            subject: 1,
+            course: 1,
+            user: { $arrayElemAt: ["$userDoc", 0] }
+          }
+        }
+      ])
+      .toArray();
+
+    books = books.map(function(book) {
+      book.user = {
+        fname: book.user.fname,
+        lname: book.user.lname,
+        email: book.user.email
+      };
+      return book;
+    });
+
+    if (books.length) {
+      resolve(books[0]);
+      console.log(books[0]);
+    } else {
+      reject();
+    }
+  });
+};
+
 module.exports = Book;

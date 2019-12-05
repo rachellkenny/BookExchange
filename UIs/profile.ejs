@@ -1,25 +1,20 @@
 <%- include('includes/loggedInNav') %>
 
   <div class="container py-md-5 container--narrow">
-    <!-- <h2> <%= fname %>&nbsp;<%= lname %> -->
+    <h2> <%= fname %>&nbsp;<%= lname %>
       <form class="ml-2 d-inline" action="mailto: <%= email %>" method="POST">
         <button class="btn btn-info">Message</button>
-        <button class="btn btn-danger btn-sm">Stop Following <i class="fas fa-user-times"></i></button>
       </form>
-    <!-- </h2>
-    <p><a href = "mailto: <%= email %>"><%= email %></a></p> -->
+    </h2>
+    <p><a href = "mailto: <%= email %>"><%= email %></a></p>
     
   
     <div class="profile-nav nav nav-tabs pt-2 mb-4">
-      <a href="#" class="profile-nav-link nav-item nav-link active">Posts: 3</a>
+      <a href="#" class="profile-nav-link nav-item nav-link active">Books</a>
     </div>
   
     <div class="list-group">
-      <!-- <% books.forEach%(function(books){ %>
-        <a href="/post/<%= book.id %>>" class="list-group-item list-group-item-action">
-          <strong><%= book.title %>></strong>
-        </a>
-      <% }) %> -->
+
     </div>
   </div>
 </body>
