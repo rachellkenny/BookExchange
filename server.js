@@ -17,6 +17,13 @@ app.use(sessionOptions); // allows login sessions - saves to database
 app.use(flash()); // for page alerts
 
 app.use(function(req, res, next) {
+  //makes current userid avail on the req object
+  if (req.session.user) {
+    req.visitorId = req.session.user._id;
+  } else {
+    req.visitorId = 0;
+  }
+  //to access user data from ejs templates
   res.locals.user = req.session.user;
   next();
 });

@@ -53,10 +53,14 @@ exports.searchResults = function(req, res) {
 
 // to view single book
 exports.viewSingle = async function(req, res) {
-  try {
-    let book = await Book.findSingleById(req.params.id);
-    res.render("singlebook", { book: book });
-  } catch {
-    res.render("404");
+  if (req.session.user) {
+    try {
+      let book = await Book.findSingleById(req.params.id, req.visitorId); //visitorid determines if current user is owner of book - defined in server.js
+      res.render("singlebook", { book: book });
+    } catch {
+      res.render("404");
+    }
+  } else {
+    res.render("mustbeloggedin");
   }
 };

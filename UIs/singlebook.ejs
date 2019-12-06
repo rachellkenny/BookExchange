@@ -26,6 +26,12 @@
                         Find
                       </button></a
                     ></td>
+                    <td>
+                      <% if (book.isVisitorOwner) { %>
+                        <p>Delete Button</p>
+
+                      <% } %>
+                    </td>
                 </tr>
               </tbody>
             </table>

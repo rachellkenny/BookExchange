@@ -62,8 +62,8 @@ Book.prototype.addFunction = function() {
 //   });
 // };
 
-//Find One Book
-Book.findSingleById = function(id) {
+// Find One Book
+Book.findSingleById = function(id, visitorId) {
   return new Promise(async function(resolve, reject) {
     //checks to see if input is a valid mongodb object id
     if (!ObjectID.isValid(id)) {
@@ -89,6 +89,7 @@ Book.findSingleById = function(id) {
             author: 1,
             subject: 1,
             course: 1,
+            userId: "$user", //$ within quotes refers to field instead of a string
             user: { $arrayElemAt: ["$userDoc", 0] }
           }
         }
@@ -96,6 +97,7 @@ Book.findSingleById = function(id) {
       .toArray();
 
     books = books.map(function(book) {
+      book.isVisitorOwner = book.userId.equals(visitorId);
       book.user = {
         fname: book.user.fname,
         lname: book.user.lname,
@@ -106,18 +108,19 @@ Book.findSingleById = function(id) {
 
     if (books.length) {
       resolve(books[0]);
-      console.log(books[0]);
+      // console.log(books[0]);
     } else {
       reject();
     }
   });
 };
 
-Book.findByUserId = function(userid) {
+Book.findBooksByUserId = function(userid) {
+  console.log("userid = " + userid);
   return new Promise(async function(resolve, reject) {
     let books = await booksCollection
       .aggregate([
-        { $match: { _id: new ObjectID(userid) } },
+        { $match: { user: userid } },
         {
           $lookup: {
             from: "users",
@@ -147,13 +150,8 @@ Book.findByUserId = function(userid) {
       };
       return book;
     });
-
-    if (books.length) {
-      resolve(books[0]);
-      console.log(books[0]);
-    } else {
-      reject();
-    }
+    console.log(books);
+    resolve(books);
   });
 };
 

@@ -14,7 +14,11 @@
     </div>
   
     <div class="list-group">
-
+        <% books.forEach(function(book) { %>
+          <a href="/book/<%= book._id %>" class="list-group-item list-group-item-action">
+            <strong><%= book.title %></strong>
+          </a>
+        <% }) %>
     </div>
   </div>
 </body>

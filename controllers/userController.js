@@ -87,28 +87,28 @@ exports.ifUserExists = function(req, res, next) {
     });
 };
 
-exports.profileScreen = function(req, res) {
-  res.render("profile", {
-    fname: req.profileUser.fname,
-    lname: req.profileUser.lname,
-    email: req.profileUser.email
-  });
-};
-
+//THIS RENDERS PROFILE W/O BOOKS IF U NEED TO UNFUCK IT UP
 // exports.profileScreen = function(req, res) {
-//   //find books by user id to display personal inventory
-//   Book.findByUserId(req.profileUser.userid)
-//     .then(function(books) {
-//       res.render("profile", {
-//         books: books,
-//         fname: req.profileUser.fname,
-//         lname: req.profileUser.lname,
-//         email: req.profileUser.email
-//       });
-//     })
-
-//     .catch(function() {
-//       res.render("404");
-//       console.log(req.profileUser);
-//     });
+//   res.render("profile", {
+//     fname: req.profileUser.fname,
+//     lname: req.profileUser.lname,
+//     email: req.profileUser.email
+//   });
 // };
+
+exports.profileScreen = function(req, res) {
+  //find books by user id to display personal inventory
+  Book.findBooksByUserId(req.profileUser.userid)
+    .then(function(books) {
+      res.render("profile", {
+        books: books,
+        fname: req.profileUser.fname,
+        lname: req.profileUser.lname,
+        email: req.profileUser.email
+      });
+    })
+    .catch(function() {
+      res.render("404");
+      console.log(req.profileUser);
+    });
+};
