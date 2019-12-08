@@ -1,25 +1,29 @@
 <%- include('includes/loggedInNav') %>
 
-  <div class="container py-md-5 container--narrow">
-    <h2> <%= fname %>&nbsp;<%= lname %>
-      <form class="ml-2 d-inline" action="mailto: <%= email %>" method="POST">
-        <button class="btn btn-info">Message</button>
-      </form>
-    </h2>
-    <p><a href = "mailto: <%= email %>"><%= email %></a></p>
-    
-  
-    <div class="profile-nav nav nav-tabs pt-2 mb-4">
-      <a href="#" class="profile-nav-link nav-item nav-link active">Books</a>
-    </div>
-  
-    <div class="list-group">
-        <% books.forEach(function(book) { %>
-          <a href="/book/<%= book._id %>" class="list-group-item list-group-item-action">
-            <strong><%= book.title %></strong>
-          </a>
-        <% }) %>
-    </div>
+<div class="container py-md-5 container--narrow">
+  <p class="display-4">Brookdale Book Exchange</p>
+  <br><br>
+  <h2> <%= fname %>&nbsp;<%= lname %>
+    <form class="ml-2 d-inline" action="mailto: <%= email %>" method="POST">
+      <button class="btn btn-info">Contact</button>
+    </form>
+  </h2>
+  <p><a href="mailto: <%= email %>"><%= email %></a></p>
+  <form class="ml-2 d-inline" action="/add" method="GET">
+    <button class="btn btn-info">Add a Book</button>
+  </form>
+
+  <div class="profile-nav nav nav-tabs pt-2 mb-4">
+    <a href="#" class="profile-nav-link nav-item nav-link active">Books</a>
   </div>
+  <div class="list-group">
+    <% books.forEach(function(book) { %>
+    <a href="/book/<%= book._id %>" class="list-group-item list-group-item-action">
+      <strong><%= book.title %></strong>
+    </a>
+    <% }) %>
+  </div>
+</div>
 </body>
+
 </html>

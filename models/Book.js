@@ -5,19 +5,20 @@ const booksCollection = require("../db")
 const ObjectID = require("mongodb").ObjectID;
 const User = require("./User");
 
-let Book = function(data, userid) {
+let Book = function (data, userid, reqBookId) {
   this.data = data;
   this.errors = [];
   this.userid = userid;
+  this.reqBookId = reqBookId;
 };
 
-Book.prototype.validate = function() {
+Book.prototype.validate = function () {
   if (this.data.title == "") {
     this.errors.push("Please add a title");
   }
 };
 
-Book.prototype.cleanup = function() {
+Book.prototype.cleanup = function () {
   this.data = {
     isbn: this.data.isbn.trim(),
     title: this.data.title.trim(),
@@ -28,8 +29,8 @@ Book.prototype.cleanup = function() {
   };
 };
 
-//Add book to database
-Book.prototype.addFunction = function() {
+//add book to db
+Book.prototype.addFunction = function () {
   return new Promise((resolve, reject) => {
     this.validate();
     this.cleanup();
@@ -48,23 +49,51 @@ Book.prototype.addFunction = function() {
   });
 };
 
-// Attempted to display all from collection. Did not work.
+//update existing book in db
+Book.prototype.update = function () {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let book = await Book.findBookById(this.reqBookId, this.userid);
+      if (book.isVisitorOwner) {
+        let status = await this.actuallyUpdate();
+        resolve(status);
+      } else {
+        reject();
+      }
+    } catch {
+      reject();
+    }
+  });
+};
 
-// Book.prototype.findAll = function() {
-//   return new Promise((resolve, reject) => {
-//     booksCollection.find({}).toArray(function(err, res) {
-//       if (err) throw err;
+Book.prototype.actuallyUpdate = function () {
+  return new Promise(async (resolve, reject) => {
+    this.cleanup();
+    this.validate();
+    if (!this.errors.length) {
+      await booksCollection.findOneAndUpdate(
+        { _id: new ObjectID(this.reqBookId) },
+        {
+          $set: {
+            isbn: this.data.isbn,
+            title: this.data.title,
+            author: this.data.author,
+            subject: this.data.subject,
+            course: this.data.course
+          }
+        }
+      );
+      resolve("success");
+    } else {
+      resolve("failure");
+    }
+  });
+};
 
-//       for (i = 0; i < res.length; i++) {
-//         console.log(res[i]);
-//       }
-//     });
-//   });
-// };
 
-// Find One Book
-Book.findSingleById = function(id, visitorId) {
-  return new Promise(async function(resolve, reject) {
+// Display 1 book on sep page
+Book.findBookById = function (id, visitorId) {
+  return new Promise(async function (resolve, reject) {
     //checks to see if input is a valid mongodb object id
     if (!ObjectID.isValid(id)) {
       reject();
@@ -96,7 +125,7 @@ Book.findSingleById = function(id, visitorId) {
       ])
       .toArray();
 
-    books = books.map(function(book) {
+    books = books.map(function (book) {
       book.isVisitorOwner = book.userId.equals(visitorId);
       book.user = {
         fname: book.user.fname,
@@ -108,16 +137,15 @@ Book.findSingleById = function(id, visitorId) {
 
     if (books.length) {
       resolve(books[0]);
-      // console.log(books[0]);
     } else {
       reject();
     }
   });
 };
 
-Book.findBooksByUserId = function(userid) {
-  console.log("userid = " + userid);
-  return new Promise(async function(resolve, reject) {
+//to display user's book on profile page
+Book.findBooksByUserId = function (userid) {
+  return new Promise(async function (resolve, reject) {
     let books = await booksCollection
       .aggregate([
         { $match: { user: userid } },
@@ -142,7 +170,7 @@ Book.findBooksByUserId = function(userid) {
       ])
       .toArray();
 
-    books = books.map(function(book) {
+    books = books.map(function (book) {
       book.user = {
         fname: book.user.fname,
         lname: book.user.lname,
@@ -150,9 +178,25 @@ Book.findBooksByUserId = function(userid) {
       };
       return book;
     });
-    console.log(books);
     resolve(books);
   });
 };
+
+Book.delete = function (bookId, currentUserId) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let book = await book.findBookById(bookId, currentUserId);
+      if (book.isVisitorOwner) {
+        await booksCollection.deleteOne({ _id: new ObjectID(bookId) })
+        resolve();
+      } else {
+        reject();
+      }
+    }
+    catch{
+      reject();
+    }
+  })
+}
 
 module.exports = Book;

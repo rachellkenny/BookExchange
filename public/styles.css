@@ -26,3 +26,8 @@
   background-color: #17a2b8;
   color: #ffffff;
 }
+
+table th,
+td {
+  text-align: center;
+}

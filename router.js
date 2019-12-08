@@ -24,13 +24,15 @@ router.get("/add", bookController.add);
 router.get("/search", bookController.search);
 router.get("/searchResults", bookController.searchResults);
 router.get("/book/:id", bookController.viewSingle);
+router.get("/book/:id/edit", bookController.viewEditScreen);
 
 //post requests for book functions
 router.post("/addFunction", bookController.addFunction);
+router.post("/book/:id/edit", bookController.editFunction);
+router.post("/book/:id/delete", bookController.deleteFunction);
 
 //misc pages
 router.get("/404", userController.errorpage);
 router.get("/mustbeloggedin", userController.pleaselogin);
-router.get("/bookadded", bookController.bookadded);
 
 module.exports = router;

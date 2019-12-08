@@ -17,6 +17,10 @@ app.use(sessionOptions); // allows login sessions - saves to database
 app.use(flash()); // for page alerts
 
 app.use(function(req, res, next) {
+  //make all flash messages avail from all ejs templates
+  res.locals.errors = req.flash("errors");
+  res.locals.success = req.flash("success");
+
   //makes current userid avail on the req object
   if (req.session.user) {
     req.visitorId = req.session.user._id;

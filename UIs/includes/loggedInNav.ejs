@@ -55,11 +55,14 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav nav-fill w-100">
-          <form action="/search" method="GET">
-            <button class="btn btn-dark">Search</button>
-          </form>
           <form action="/profile/<%= user.email %>" method="GET">
             <button class="btn btn-dark">My Books</button>
+          </form>
+          <form action="/search" method="GET">
+            <button class="btn btn-dark">Search Books</button>
+          </form>
+          <form action="/add" method="GET">
+            <button class="btn btn-dark">Add A Book</button>
           </form>
           <div class="ml-auto">
             <form action="/logout" method="POST">

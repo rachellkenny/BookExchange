@@ -1,0 +1,42 @@
+<%- include('includes/loggedInNav') %>
+
+<div class="container" id="add">
+  <p class="display-4">Edit Book Listing</p>
+
+  <%- include('includes/flashalerts') %>
+
+  <form action="/book/<%= book._id %>/edit" method="POST" id="add-book-form">
+    <div class="form-group">
+      <label for="isbn" class="text-muted mb-1"><small>ISBN</small></label>
+      <input name="isbn" id="isbn" class="form-control" type="text" value="<%= book.isbn %>" />
+    </div>
+    <div class="form-group">
+      <label for="title" class="text-muted mb-1"><small>Title</small></label>
+      <input name="title" id="title" class="form-control" type="text" value="<%= book.title %>" />
+    </div>
+
+    <div class="form-group">
+      <label for="author" class="text-muted mb-1"><small>Author</small></label>
+      <input name="author" id="author" class="form-control" type="text" value="<%= book.author %>" />
+    </div>
+
+    <div class="form-group">
+      <label for="subject" class="text-muted mb-1"><small>Subject</small></label>
+      <select class="form-control" name="subject" id="subject">
+        <option value="<%= book.subject %>" selected><%= book.subject %></option>
+        <%- include('includes/subjectList') %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="course" class="text-muted mb-1"><small>Course Number</small></label>
+      <input name="course" id="course" class="form-control" value="<%= book.course %>" />
+    </div>
+
+    <button type="submit" class="btn btn-info">
+      Edit Book Listing
+    </button>
+  </form>
+</div>
+</body>
+
+</html>

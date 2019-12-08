@@ -1,14 +1,14 @@
-//This controller handles book search, add function, delete function, inventory data
+//handles book search, add function, update function, delete function, inventory data
 const Book = require("../models/Book");
 
-exports.mybooks = function(req, res) {
+exports.mybooks = function (req, res) {
   if (req.session.user) {
     res.render("mybooks");
   } else {
     res.render("mustbeloggedin");
   }
 };
-exports.add = function(req, res) {
+exports.add = function (req, res) {
   if (req.session.user) {
     res.render("add", { errors: req.flash("errors") });
   } else {
@@ -16,26 +16,25 @@ exports.add = function(req, res) {
   }
 };
 
-exports.addFunction = function(req, res) {
+exports.addFunction = function (req, res) {
   let book = new Book(req.body, req.session.user._id);
   book
     .addFunction()
-    .then(function() {
-      res.render("bookadded");
+    .then(function () {
+      req.flash("success", "Book added successfully.");
+      req.session.save(function () {
+        res.redirect("/add");
+      })
     })
-    .catch(function(err) {
+    .catch(function (err) {
       req.flash("errors", err);
-      req.session.save(function() {
+      req.session.save(function () {
         res.redirect("/add");
       });
     });
 };
 
-exports.bookadded = function(req, res) {
-  res.render("bookadded");
-};
-
-exports.search = function(req, res) {
+exports.search = function (req, res) {
   if (req.session.user) {
     res.render("search");
   } else {
@@ -43,7 +42,7 @@ exports.search = function(req, res) {
   }
 };
 
-exports.searchResults = function(req, res) {
+exports.searchResults = function (req, res) {
   if (req.session.user) {
     res.render("searchresults");
   } else {
@@ -52,10 +51,10 @@ exports.searchResults = function(req, res) {
 };
 
 // to view single book
-exports.viewSingle = async function(req, res) {
+exports.viewSingle = async function (req, res) {
   if (req.session.user) {
     try {
-      let book = await Book.findSingleById(req.params.id, req.visitorId); //visitorid determines if current user is owner of book - defined in server.js
+      let book = await Book.findBookById(req.params.id, req.visitorId); //visitorid determines if current user is owner of book - defined in server.js
       res.render("singlebook", { book: book });
     } catch {
       res.render("404");
@@ -64,3 +63,54 @@ exports.viewSingle = async function(req, res) {
     res.render("mustbeloggedin");
   }
 };
+
+exports.viewEditScreen = async function (req, res) {
+  try {
+    let book = await Book.findBookById(req.params.id);
+    if (book.userId == req.visitorId) {
+      res.render("edit-book", { book: book });
+    }
+    else {
+      res.redirect("/");
+    }
+
+  } catch {
+    res.render("404");
+  }
+}
+
+exports.editFunction = function (req, res) {
+  let book = new Book(req.body, req.visitorId, req.params.id);
+  book
+    .update()
+    .then((status) => {
+      //book was successfully updated or was not b/c of validation errors
+      if (status == "success") {
+        req.flash("success", "Book listing successfully updated.");
+        req.session.save(function () {
+          res.redirect(`/book/${req.params.id}/edit`);
+        });
+      } else {
+        book.errors.forEach(function (error) {
+          req.flash("errors", error);
+        });
+        req.session.save(function () {
+          res.redirect(`/book/${req.params.id}/edit`);
+        });
+      }
+    })
+    .catch(() => {
+      //if book with req id doesnt exist or current logged in user is not owner of book
+      res.render("404");
+    });
+}
+
+// exports.deleteFunction = function (req, res) {
+//   Book.delete(req.params.id, req.visitorId).then(() => {
+//     req.flash("success", "Book deleted successfully.");
+//     req.session.save(() => { res.redirect(`/profile/${req.session.user.email}`) })
+//   }).catch(() => {
+//     res.render(`/profile/${req.session.user.email}`);
+//   })
+// }
+
