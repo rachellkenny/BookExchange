@@ -1,53 +1,55 @@
 <%- include('includes/loggedInNav') %>
 
-    <div class="container" id="home">
-      <p class="display-4">Brookdale Book Exchange</p>
-      <p class="lead">Hi, <strong><%= user.fname %>!</strong></p>
-      <form action="/search" method="GET">
-        <button type="submit" class="btn btn-info">Search for Books</button>
-      </form>
-      <br /><br />
-      <p class="lead">Books Currently Available</p>
-      <div id="booksAvail">
-        <table class="table">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">ISBN</th>
-              <th scope="col">Title</th>
-              <th scope="col">Author</th>
-              <th scope="col">Subject</th>
-              <th scope="col">Course</th>
-              <th scope="col">Find Now</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>title</td>
-              <td>author</td>
-              <td>subject</td>
-              <td>course</td>
-              <td><button class="btn btn-outline-info" type="submit">Find</button></td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>title</td>
-              <td>author</td>
-              <td>subject</td>
-              <td>course</td>
-              <td><button class="btn btn-outline-info" type="submit">Find</button></td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>title</td>
-              <td>author</td>
-              <td>subject</td>
-              <td>course</td>
-              <td><button class="btn btn-outline-info" type="submit">Find</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </body>
+<div class="container" id="home">
+  <p class="display-4">Brookdale Book Exchange</p>
+  <%- include('includes/flashalerts') %>
+  <p class="lead">Hi, <strong><%= user.fname %>!</strong></p>
+  <form action="/search" method="GET">
+    <button type="submit" class="btn btn-info">Search for Books</button>
+  </form>
+  <br /><br />
+  <p class="lead">Books Currently Available</p>
+  <div id="booksAvail">
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">ISBN</th>
+          <th scope="col">Title</th>
+          <th scope="col">Author</th>
+          <th scope="col">Subject</th>
+          <th scope="col">Course</th>
+          <th scope="col">Find Now</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>title</td>
+          <td>author</td>
+          <td>subject</td>
+          <td>course</td>
+          <td><button class="btn btn-outline-info" type="submit">Find</button></td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>title</td>
+          <td>author</td>
+          <td>subject</td>
+          <td>course</td>
+          <td><button class="btn btn-outline-info" type="submit">Find</button></td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>title</td>
+          <td>author</td>
+          <td>subject</td>
+          <td>course</td>
+          <td><button class="btn btn-outline-info" type="submit">Find</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+
 </html>

@@ -3,7 +3,7 @@
 <div class="container py-md-5 container--narrow">
   <div class="d-flex justify-content-between">
     <table class="table">
-      <thead class="thead-dark">
+      <thead class="bg-info text-white">
         <tr>
           <th scope="col">ISBN</th>
           <th scope="col">Title</th>
@@ -26,10 +26,13 @@
           <td><%= book.subject %></td>
           <td><%= book.course %></td>
           <% if (book.isVisitorOwner) { %>
-          <td><a href="/book/<%= book._id %>/edit"><i class="fas fa-edit"></i></a> </td>
           <td>
-            <form action="/book/<%= book._id %>/delete" method="POST"><button class="delete-post-button text-danger"><i
+              <form action="/book/<%= book._id %>/edit" method="POST"><button class="btn btn-link"><i
+                class="fas fa-edit"></i></button></form> </td>
+          <td>
+            <form action="/book/<%= book._id %>/delete" method="POST"><button class="btn btn-link text-danger"><i
                   class="fas fa-minus-circle"></i></button></form>
+                  
           </td>
           <% } else { %>
           <td><a href="/profile/<%= book.user.email %>">User</a></td>

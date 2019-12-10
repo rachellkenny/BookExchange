@@ -2,23 +2,29 @@
 
 <div class="container py-md-5 container--narrow">
   <p class="display-4">Brookdale Book Exchange</p>
+  <%- include('includes/flashalerts') %>
   <br><br>
   <h2> <%= fname %>&nbsp;<%= lname %>
-    <form class="ml-2 d-inline" action="mailto: <%= email %>" method="POST">
+    
+    <!-- CONTACT BUTTON FOR PUBLIC PAGE
+      <form class="ml-2 d-inline" action="mailto: <%= email %>" method="POST">
       <button class="btn btn-info">Contact</button>
-    </form>
+    </form> -->
   </h2>
   <p><a href="mailto: <%= email %>"><%= email %></a></p>
-  <form class="ml-2 d-inline" action="/add" method="GET">
+  <!-- <form class="ml-2 d-inline" action="/add" method="GET">
     <button class="btn btn-info">Add a Book</button>
-  </form>
+  </form> -->
 
-  <div class="profile-nav nav nav-tabs pt-2 mb-4">
-    <a href="#" class="profile-nav-link nav-item nav-link active">Books</a>
-  </div>
+  <br><br>
+
+ 
   <div class="list-group">
+    <h5><%= fname %>'s Books</h5>
+    <small>Click Title for Details</small>
+    <br>
     <% books.forEach(function(book) { %>
-    <a href="/book/<%= book._id %>" class="list-group-item list-group-item-action">
+    <a href="/book/<%= book._id %>" class="list-group-item list-group-item-action list-group-item-info">
       <strong><%= book.title %></strong>
     </a>
     <% }) %>

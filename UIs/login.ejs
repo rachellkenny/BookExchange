@@ -1,36 +1,22 @@
 <%- include('includes/loggedOutNav') %>
 
-    <div class="container" id="login">
-      <p class="display-4">Login</p>
-      <% errors.forEach(function(message) { %>
-      <div class="alert alert-danger">
-        <%= message %>
-      </div>
-      <% }) %>
-      <form action="/loginFunction" method="POST">
-        <div class="form-group">
-          <label for="email">Your Brookdale Student Email</label>
-          <input
-            name="email"
-            class="form-control"
-            type="text"
-            placeholder="Email"
-            autocomplete="off"
-          />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            name="password"
-            class="form-control"
-            type="password"
-            placeholder="Password"
-          />
-        </div>
-        <button class="btn btn-info">Log In</button>
-      </form>
-      <br>
-      <p>Don't have an account? <a href="register">Register here.</a></p>
+<div class="container" id="login">
+  <p class="display-4">Login</p>
+  <%- include('includes/flashalerts') %>
+  <form action="/loginFunction" method="POST">
+    <div class="form-group">
+      <label for="email">Your Brookdale Student Email</label>
+      <input name="email" class="form-control" type="text" placeholder="Email" autocomplete="off" />
     </div>
-  </body>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input name="password" class="form-control" type="password" placeholder="Password" />
+    </div>
+    <button class="btn btn-info">Log In</button>
+  </form>
+  <br>
+  <p>Don't have an account? <a href="register">Register here.</a></p>
+</div>
+</body>
+
 </html>

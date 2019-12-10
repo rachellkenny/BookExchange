@@ -105,12 +105,13 @@ exports.editFunction = function (req, res) {
     });
 }
 
-// exports.deleteFunction = function (req, res) {
-//   Book.delete(req.params.id, req.visitorId).then(() => {
-//     req.flash("success", "Book deleted successfully.");
-//     req.session.save(() => { res.redirect(`/profile/${req.session.user.email}`) })
-//   }).catch(() => {
-//     res.render(`/profile/${req.session.user.email}`);
-//   })
-// }
+exports.deleteFunction = function (req, res) {
+  Book.delete(req.params.id, req.visitorId).then(() => {
+    req.flash("success", "Book deleted successfully.");
+    req.session.save(() => { res.redirect(`/profile/${req.session.user.email}`) })
+  }).catch(() => {
+    req.flash("errors", "You do not have permission to perform that action.")
+    req.session.save(() => res.redirect("/"))
+  })
+}
 

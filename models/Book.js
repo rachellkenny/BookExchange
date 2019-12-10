@@ -185,16 +185,19 @@ Book.findBooksByUserId = function (userid) {
 Book.delete = function (bookId, currentUserId) {
   return new Promise(async (resolve, reject) => {
     try {
-      let book = await book.findBookById(bookId, currentUserId);
+      let book = await Book.findBookById(bookId, currentUserId);
       if (book.isVisitorOwner) {
         await booksCollection.deleteOne({ _id: new ObjectID(bookId) })
         resolve();
+        console.log("everything's fine")
       } else {
         reject();
+        console.log("ids do not match")
       }
     }
     catch{
       reject();
+      console.log("some other dumb error")
     }
   })
 }
