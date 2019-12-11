@@ -5,20 +5,20 @@ const booksCollection = require("../db")
 const ObjectID = require("mongodb").ObjectID;
 const User = require("./User");
 
-let Book = function (data, userid, reqBookId) {
+let Book = function(data, userid, reqBookId) {
   this.data = data;
   this.errors = [];
   this.userid = userid;
   this.reqBookId = reqBookId;
 };
 
-Book.prototype.validate = function () {
+Book.prototype.validate = function() {
   if (this.data.title == "") {
     this.errors.push("Please add a title");
   }
 };
 
-Book.prototype.cleanup = function () {
+Book.prototype.cleanup = function() {
   this.data = {
     isbn: this.data.isbn.trim(),
     title: this.data.title.trim(),
@@ -30,7 +30,7 @@ Book.prototype.cleanup = function () {
 };
 
 //add book to db
-Book.prototype.addFunction = function () {
+Book.prototype.addFunction = function() {
   return new Promise((resolve, reject) => {
     this.validate();
     this.cleanup();
@@ -50,7 +50,7 @@ Book.prototype.addFunction = function () {
 };
 
 //update existing book in db
-Book.prototype.update = function () {
+Book.prototype.update = function() {
   return new Promise(async (resolve, reject) => {
     try {
       let book = await Book.findBookById(this.reqBookId, this.userid);
@@ -66,7 +66,7 @@ Book.prototype.update = function () {
   });
 };
 
-Book.prototype.actuallyUpdate = function () {
+Book.prototype.actuallyUpdate = function() {
   return new Promise(async (resolve, reject) => {
     this.cleanup();
     this.validate();
@@ -90,10 +90,9 @@ Book.prototype.actuallyUpdate = function () {
   });
 };
 
-
 // Display 1 book on sep page
-Book.findBookById = function (id, visitorId) {
-  return new Promise(async function (resolve, reject) {
+Book.findBookById = function(id, visitorId) {
+  return new Promise(async function(resolve, reject) {
     //checks to see if input is a valid mongodb object id
     if (!ObjectID.isValid(id)) {
       reject();
@@ -125,7 +124,7 @@ Book.findBookById = function (id, visitorId) {
       ])
       .toArray();
 
-    books = books.map(function (book) {
+    books = books.map(function(book) {
       book.isVisitorOwner = book.userId.equals(visitorId);
       book.user = {
         fname: book.user.fname,
@@ -144,8 +143,8 @@ Book.findBookById = function (id, visitorId) {
 };
 
 //to display user's book on profile page
-Book.findBooksByUserId = function (userid) {
-  return new Promise(async function (resolve, reject) {
+Book.findBooksByUserId = function(userid) {
+  return new Promise(async function(resolve, reject) {
     let books = await booksCollection
       .aggregate([
         { $match: { user: userid } },
@@ -170,7 +169,7 @@ Book.findBooksByUserId = function (userid) {
       ])
       .toArray();
 
-    books = books.map(function (book) {
+    books = books.map(function(book) {
       book.user = {
         fname: book.user.fname,
         lname: book.user.lname,
@@ -182,24 +181,66 @@ Book.findBooksByUserId = function (userid) {
   });
 };
 
-Book.delete = function (bookId, currentUserId) {
+Book.delete = function(bookId, currentUserId) {
   return new Promise(async (resolve, reject) => {
     try {
       let book = await Book.findBookById(bookId, currentUserId);
       if (book.isVisitorOwner) {
-        await booksCollection.deleteOne({ _id: new ObjectID(bookId) })
+        await booksCollection.deleteOne({ _id: new ObjectID(bookId) });
         resolve();
-        console.log("everything's fine")
       } else {
         reject();
-        console.log("ids do not match")
       }
-    }
-    catch{
+    } catch {
       reject();
-      console.log("some other dumb error")
     }
-  })
-}
+  });
+};
+
+Book.search = function(searchValue) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let books = await booksCollection
+        .aggregate([
+          //text search in mongodb doesn't look for exact matches - best match is rated by textScore
+          { $match: { $text: { $search: searchValue } } },
+          { $sort: { score: { $meta: "textScore" } } },
+          {
+            $lookup: {
+              from: "users",
+              localField: "user",
+              foreignField: "_id",
+              as: "userDoc"
+            }
+          },
+          {
+            $project: {
+              isbn: 1,
+              title: 1,
+              author: 1,
+              subject: 1,
+              course: 1,
+              user: { $arrayElemAt: ["$userDoc", 0] }
+            }
+          }
+        ])
+        .toArray();
+
+      // books = books.map(function(book) {
+      //   book.user = {
+      //     fname: book.user.fname,
+      //     lname: book.user.lname,
+      //     email: book.user.email
+      //   };
+
+      //   return book;
+      // });
+
+      resolve(books);
+    } catch {
+      reject();
+    }
+  });
+};
 
 module.exports = Book;

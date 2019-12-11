@@ -1,44 +1,19 @@
 <%- include('includes/loggedInNav') %>
 
-    <div class="container" id="searchResultspage">
-      <p class="display-4">Search for Books</p>
-      <p class="lead">Search Results</p>
-      <div id="searchResults">
-        <table class="table">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">ISBN</th>
-              <th scope="col">Title</th>
-              <th scope="col">Author</th>
-              <th scope="col">Subject</th>
-              <th scope="col">Course</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>title</td>
-              <td>author</td>
-              <td>subject</td>
-              <td>course</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>title</td>
-              <td>author</td>
-              <td>subject</td>
-              <td>course</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>title</td>
-              <td>author</td>
-              <td>subject</td>
-              <td>course</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </body>
+<div class="container py-md-5 container--narrow">
+  <p class="display-4">Brookdale Book Exchange</p>
+  <%- include('includes/flashalerts') %>
+  <h4>Search Results</h4>
+  <div class="list-group">
+    <small>Click Title for Details</small>
+    <br>
+    <% books.forEach(function(book) { %>
+    <a href="/book/<%= book._id %>" class="list-group-item list-group-item-action list-group-item-info">
+      <strong><%= book.title %></strong>
+    </a>
+    <% }) %>
+  </div>
+</div>
+</body>
+
 </html>

@@ -3,7 +3,7 @@ const router = express.Router();
 const userController = require("./controllers/userController");
 const bookController = require("./controllers/bookController");
 
-//user routes for get reqs
+//get requests for user pages
 router.get("/", userController.landing);
 router.get("/register", userController.registerPage);
 router.get("/login", userController.loginPage);
@@ -13,23 +13,23 @@ router.get(
   userController.profileScreen
 );
 
-//user routes for post reqs
+//post requests for user functions
 router.post("/registerFunction", userController.registerFunction);
 router.post("/loginFunction", userController.loginFunction);
 router.post("/logout", userController.logout);
 
-//get requests for book-related pages
-router.get("/mybooks", bookController.mybooks);
-router.get("/add", bookController.add);
-router.get("/search", bookController.search);
-router.get("/searchResults", bookController.searchResults);
-router.get("/book/:id", bookController.viewSingle);
-router.get("/book/:id/edit", bookController.viewEditScreen);
+//get requests for book pages
+router.get("/add", bookController.addPage);
+router.get("/search", bookController.searchPage);
+router.get("/searchresults", bookController.searchResultsPage);
+router.get("/book/:id", bookController.singleBookPage);
+router.get("/book/:id/edit", bookController.editPage);
 
 //post requests for book functions
 router.post("/addFunction", bookController.addFunction);
 router.post("/book/:id/edit", bookController.editFunction);
 router.post("/book/:id/delete", bookController.deleteFunction);
+router.post("/searchFunction", bookController.searchFunction);
 
 //misc pages
 router.get("/404", userController.errorpage);
