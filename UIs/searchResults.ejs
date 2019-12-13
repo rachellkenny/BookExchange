@@ -3,16 +3,81 @@
 <div class="container py-md-5 container--narrow">
   <p class="display-4">Brookdale Book Exchange</p>
   <%- include('includes/flashalerts') %>
+  <a href="search"><small>&larr; Back to Search</small></a>
+  <br><br>
   <h4>Search Results</h4>
-  <div class="list-group">
+  <% if (books.length){ %>
+    <% books.forEach(function(book) { %>
+  <div id="accordion">
+        <div class="card" id="<%= book._id %>">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne_<%= book._id %>" aria-expanded="false" aria-controls="collapseOne_<%= book._id %>">
+                <strong><%= book.title %></strong>
+              </button>
+            </h5>
+          </div>
+      
+          <div id="collapseOne_<%= book._id %>" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <table class="table">
+                  <thead class="bg-info text-white">
+                    <tr>
+                      <th scope="col">ISBN</th>
+                      <th scope="col">Author</th>
+                      <th scope="col">Subject</th>
+                      <th scope="col">Course</th>
+                      <% if (book.isVisitorOwner) { %>
+                      <th scope="col">Update</th>
+                      <th scope="col">Delete</th>
+                      <% } else { %>
+                      <th scope="col">Owner</th>
+                      <% }%>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row"><%= book.isbn %></th>
+                      <td><%= book.author %></td>
+                      <td><%= book.subject %></td>
+                      <td><%= book.course %></td>
+                      <% if (book.isVisitorOwner) { %>
+                      <td>
+                          <form action="/book/<%= book._id %>/edit" method="GET"><button class="btn btn-link"><i
+                            class="fas fa-edit"></i></button></form> </td>
+                      <td>
+                        <form action="/book/<%= book._id %>/delete" method="POST"><button class="btn btn-link text-danger"><i
+                              class="fas fa-minus-circle"></i></button></form>
+                              
+                      </td>
+                      <% } else { %>
+                      <td><a href="/profile/<%= book.user.email %>">Go to Profile</a></td>
+                      <% }%>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+      <% })} else  { %>
+        <p>No Books Added Yet</p>
+        <% } %> %>
+  <!-- <div class="list-group">
     <small>Click Title for Details</small>
     <br>
+    <% if (books.length){ %>
     <% books.forEach(function(book) { %>
     <a href="/book/<%= book._id %>" class="list-group-item list-group-item-action list-group-item-info">
       <strong><%= book.title %></strong>
     </a>
-    <% }) %>
-  </div>
+    <% })} else  { %>
+    <p>No Results Found</p>
+    <% } %>
+  </div> -->
 </div>
 </body>
 

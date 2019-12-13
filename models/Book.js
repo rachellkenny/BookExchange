@@ -54,6 +54,7 @@ Book.prototype.update = function() {
   return new Promise(async (resolve, reject) => {
     try {
       let book = await Book.findBookById(this.reqBookId, this.userid);
+      console.log("update function::: " + JSON.stringify(book));
       if (book.isVisitorOwner) {
         let status = await this.actuallyUpdate();
         resolve(status);
@@ -68,7 +69,6 @@ Book.prototype.update = function() {
 
 Book.prototype.actuallyUpdate = function() {
   return new Promise(async (resolve, reject) => {
-    this.cleanup();
     this.validate();
     if (!this.errors.length) {
       await booksCollection.findOneAndUpdate(
@@ -142,8 +142,8 @@ Book.findBookById = function(id, visitorId) {
   });
 };
 
-//to display user's book on profile page
-Book.findBooksByUserId = function(userid) {
+//to display user's books on profile page
+Book.findBooksByUserId = function(userid, visitorId) {
   return new Promise(async function(resolve, reject) {
     let books = await booksCollection
       .aggregate([
@@ -171,33 +171,19 @@ Book.findBooksByUserId = function(userid) {
 
     books = books.map(function(book) {
       book.user = {
+        _id: book.user._id,
         fname: book.user.fname,
         lname: book.user.lname,
         email: book.user.email
       };
+      book.isVisitorOwner = book.user._id.equals(visitorId);
       return book;
     });
     resolve(books);
   });
 };
 
-Book.delete = function(bookId, currentUserId) {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let book = await Book.findBookById(bookId, currentUserId);
-      if (book.isVisitorOwner) {
-        await booksCollection.deleteOne({ _id: new ObjectID(bookId) });
-        resolve();
-      } else {
-        reject();
-      }
-    } catch {
-      reject();
-    }
-  });
-};
-
-Book.search = function(searchValue) {
+Book.search = function(searchValue, visitorId) {
   return new Promise(async (resolve, reject) => {
     try {
       let books = await booksCollection
@@ -226,17 +212,33 @@ Book.search = function(searchValue) {
         ])
         .toArray();
 
-      // books = books.map(function(book) {
-      //   book.user = {
-      //     fname: book.user.fname,
-      //     lname: book.user.lname,
-      //     email: book.user.email
-      //   };
-
-      //   return book;
-      // });
-
+      books = books.map(function(book) {
+        book.user = {
+          _id: book.user._id,
+          fname: book.user.fname,
+          lname: book.user.lname,
+          email: book.user.email
+        };
+        book.isVisitorOwner = book.user._id.equals(visitorId);
+        return book;
+      });
       resolve(books);
+    } catch {
+      reject();
+    }
+  });
+};
+
+Book.delete = function(bookId, currentUserId) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let book = await Book.findBookById(bookId, currentUserId);
+      if (book.isVisitorOwner) {
+        await booksCollection.deleteOne({ _id: new ObjectID(bookId) });
+        resolve();
+      } else {
+        reject();
+      }
     } catch {
       reject();
     }

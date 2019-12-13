@@ -2,13 +2,26 @@
 
 <div class="container" id="home">
   <p class="display-4">Brookdale Book Exchange</p>
+
   <%- include('includes/flashalerts') %>
-  <p class="lead">Hi, <strong><%= user.fname %>!</strong></p>
-  <form action="/search" method="GET">
-    <button type="submit" class="btn btn-info">Search for Books</button>
-  </form>
-  <br /><br />
-  <p class="lead">Books Currently Available</p>
+
+  <section class="jumbotron text-center">
+      <h3 class="jumbotron-heading">Hi, <strong><%= user.fname %>!</strong></h3>
+      <p class="lead text-muted">What would you like to do?</p>
+      <p>
+        <form action="/search" method="GET">
+          <button type="submit" class="btn btn-info my-2">Search for Books</button>
+        </form>
+        <form action="/add" method="GET">
+          <button type="submit" class="btn btn-info my-2">Add a Book</button>
+        </form>
+      </p>
+    </div>
+  </section>
+
+
+ 
+  <!-- <p class="lead">Books Currently Available</p>
   <div id="booksAvail">
     <table class="table">
       <thead class="thead-dark">
@@ -48,8 +61,7 @@
         </tr>
       </tbody>
     </table>
-  </div>
+  </div> -->
 </div>
 </body>
-
 </html>

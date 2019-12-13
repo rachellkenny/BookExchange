@@ -36,21 +36,14 @@ exports.searchPage = function(req, res) {
 };
 
 exports.searchFunction = function(req, res) {
-  Book.search(req.body.searchValue)
+  Book.search(req.body.searchValue, req.visitorId)
     .then(books => {
-      res.json(books);
+      res.render("searchresults", { books: books });
+      console.log(books);
     })
     .catch(() => {
       res.json([]);
     });
-};
-
-exports.searchResultsPage = function(req, res) {
-  if (req.session.user) {
-    res.render("searchresults");
-  } else {
-    res.render("mustbeloggedin");
-  }
 };
 
 // to view single book details
@@ -70,6 +63,7 @@ exports.singleBookPage = async function(req, res) {
 exports.editPage = async function(req, res) {
   try {
     let book = await Book.findBookById(req.params.id);
+    console.log(book);
     if (book.userId == req.visitorId) {
       res.render("edit-book", { book: book });
     } else {

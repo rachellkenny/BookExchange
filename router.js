@@ -21,13 +21,12 @@ router.post("/logout", userController.logout);
 //get requests for book pages
 router.get("/add", bookController.addPage);
 router.get("/search", bookController.searchPage);
-router.get("/searchresults", bookController.searchResultsPage);
 router.get("/book/:id", bookController.singleBookPage);
 router.get("/book/:id/edit", bookController.editPage);
 
 //post requests for book functions
 router.post("/addFunction", bookController.addFunction);
-router.post("/book/:id/edit", bookController.editFunction);
+router.post("/book/:id/editFunction", bookController.editFunction);
 router.post("/book/:id/delete", bookController.deleteFunction);
 router.post("/searchFunction", bookController.searchFunction);
 

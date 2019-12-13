@@ -14,7 +14,7 @@
           <th scope="col">Update</th>
           <th scope="col">Delete</th>
           <% } else { %>
-          <th scope="col">User</th>
+          <th scope="col">Owner</th>
           <% }%>
         </tr>
       </thead>
@@ -27,7 +27,7 @@
           <td><%= book.course %></td>
           <% if (book.isVisitorOwner) { %>
           <td>
-              <form action="/book/<%= book._id %>/edit" method="POST"><button class="btn btn-link"><i
+              <form action="/book/<%= book._id %>/edit" method="GET"><button class="btn btn-link"><i
                 class="fas fa-edit"></i></button></form> </td>
           <td>
             <form action="/book/<%= book._id %>/delete" method="POST"><button class="btn btn-link text-danger"><i
@@ -35,7 +35,7 @@
                   
           </td>
           <% } else { %>
-          <td><a href="/profile/<%= book.user.email %>">User</a></td>
+          <td><a href="/profile/<%= book.user.email %>">Go to Profile</a></td>
           <% }%>
           </td>
         </tr>
