@@ -14,7 +14,10 @@ let Book = function(data, userid, reqBookId) {
 
 Book.prototype.validate = function() {
   if (this.data.title == "") {
-    this.errors.push("Please add a title");
+    this.errors.push("Please add a title.");
+  }
+  if (this.data.author == "") {
+    this.errors.push("Please add an author.");
   }
 };
 
@@ -54,7 +57,6 @@ Book.prototype.update = function() {
   return new Promise(async (resolve, reject) => {
     try {
       let book = await Book.findBookById(this.reqBookId, this.userid);
-      console.log("update function::: " + JSON.stringify(book));
       if (book.isVisitorOwner) {
         let status = await this.actuallyUpdate();
         resolve(status);

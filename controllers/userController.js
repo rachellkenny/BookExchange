@@ -44,7 +44,17 @@ exports.registerFunction = function(req, res) {
       res.redirect("/register");
     });
   } else {
-    res.redirect("/login");
+    let user = new User(req.body);
+
+    req.session.user = {
+      email: user.data.email,
+      fname: user.data.fname,
+      lname: user.data.lname,
+      _id: user.data._id
+    };
+    req.session.save(function() {
+      res.redirect("/");
+    });
   }
 };
 
@@ -90,14 +100,15 @@ exports.ifUserExists = function(req, res, next) {
 
 exports.profileScreen = function(req, res) {
   //find books by user id to display personal inventory
-  //console.log(req);
   Book.findBooksByUserId(req.profileUser.userid, req.visitorId)
     .then(function(books) {
       res.render("profile", {
         books: books,
         fname: req.profileUser.fname,
         lname: req.profileUser.lname,
-        email: req.profileUser.email
+        email: req.profileUser.email,
+        userid: req.profileUser.userid,
+        visitorId: req.visitorId
       });
     })
     .catch(function() {

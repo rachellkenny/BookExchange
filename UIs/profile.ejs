@@ -4,21 +4,26 @@
   <p class="display-4">Brookdale Book Exchange</p>
   <%- include('includes/flashalerts') %>
   <br><br>
-  <h2> <%= fname %>&nbsp;<%= lname %>
-    
-    <!-- CONTACT BUTTON FOR PUBLIC PAGE
-      <form class="ml-2 d-inline" action="mailto: <%= email %>" method="POST">
-      <button class="btn btn-info">Contact</button>
-    </form> -->
-  </h2>
-  <p><a href="mailto: <%= email %>"><%= email %></a></p>
-  <!-- <form class="ml-2 d-inline" action="/add" method="GET">
+  <h2> <%= fname %>&nbsp;<%= lname %></h2>
+
+    <% if (userid == visitorId){ %>
+      <!-- for user's own prof page -->
+  <form class="ml-2 d-inline" action="/add" method="GET">
     <button class="btn btn-info">Add a Book</button>
-  </form> -->
+  </form>
+
+      <% } else { %>
+      <!-- for someone else's prof page -->
+      <p class="small"><%= email %></p><br>
+      <form class="ml-2 d-inline" action="mailto: <%= email %>" method="POST">
+      <button class="btn btn-info my-2">Contact <%= fname %></button><br>
+    </form>
+      <% } %>
+    
   <br><br>
     <h5><%= fname %>'s Books</h5>
     <small>Click Title for Details</small>
-    <br>
+    <br><br>
     
     <% if (books.length){ %>
     <% books.forEach(function(book) { %>
@@ -26,7 +31,7 @@
         <div class="card" id="<%= book._id %>">
           <div class="card-header">
             <h5 class="mb-0">
-              <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne_<%= book._id %>" aria-expanded="false" aria-controls="collapseOne_<%= book._id %>">
+              <button class="btn btn-link booktitle" data-toggle="collapse" data-target="#collapseOne_<%= book._id %>" aria-expanded="false" aria-controls="collapseOne_<%= book._id %>">
                 <strong><%= book.title %></strong>
               </button>
             </h5>
@@ -42,12 +47,11 @@
                       <th scope="col">Author</th>
                       <th scope="col">Subject</th>
                       <th scope="col">Course</th>
+                      <!-- if current user is on own profile page, has ability to update/delete -->
                       <% if (book.isVisitorOwner) { %>
                       <th scope="col">Update</th>
                       <th scope="col">Delete</th>
-                      <% } else { %>
-                      <th scope="col">Owner</th>
-                      <% }%>
+                      <% } %>
                     </tr>
                   </thead>
                   <tbody>
@@ -56,6 +60,7 @@
                       <td><%= book.author %></td>
                       <td><%= book.subject %></td>
                       <td><%= book.course %></td>
+                      <!-- if current user is on own profile page, has ability to update/delete -->
                       <% if (book.isVisitorOwner) { %>
                       <td>
                           <form action="/book/<%= book._id %>/edit" method="GET"><button class="btn btn-link"><i
@@ -63,12 +68,8 @@
                       <td>
                         <form action="/book/<%= book._id %>/delete" method="POST"><button class="btn btn-link text-danger"><i
                               class="fas fa-minus-circle"></i></button></form>
-                              
                       </td>
-                      <% } else { %>
-                      <td><a href="/profile/<%= book.user.email %>">Go to Profile</a></td>
-                      <% }%>
-                      </td>
+                      <% } %>
                     </tr>
                   </tbody>
                 </table>

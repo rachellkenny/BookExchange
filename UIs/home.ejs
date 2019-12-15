@@ -1,11 +1,13 @@
 <%- include('includes/loggedInNav') %>
 
 <div class="container" id="home">
-  <p class="display-4">Brookdale Book Exchange</p>
+ 
 
   <%- include('includes/flashalerts') %>
 
   <section class="jumbotron text-center">
+    <h2 class="display-4">Brookdale Book Exchange</h2>
+    <br><br>
       <h3 class="jumbotron-heading">Hi, <strong><%= user.fname %>!</strong></h3>
       <p class="lead text-muted">What would you like to do?</p>
       <p>
@@ -14,6 +16,9 @@
         </form>
         <form action="/add" method="GET">
           <button type="submit" class="btn btn-info my-2">Add a Book</button>
+        </form>
+        <form action="/profile/<%= user.email %>" method="GET">
+          <button type="submit" class="btn btn-info my-2">View My Books</button>
         </form>
       </p>
     </div>

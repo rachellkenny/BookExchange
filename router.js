@@ -21,7 +21,7 @@ router.post("/logout", userController.logout);
 //get requests for book pages
 router.get("/add", bookController.addPage);
 router.get("/search", bookController.searchPage);
-router.get("/book/:id", bookController.singleBookPage);
+router.get("/book/:id", bookController.viewSingleBook);
 router.get("/book/:id/edit", bookController.editPage);
 
 //post requests for book functions

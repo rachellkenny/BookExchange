@@ -22,7 +22,7 @@ exports.addFunction = function(req, res) {
     .catch(function(err) {
       req.flash("errors", err);
       req.session.save(function() {
-        res.redirect("/add");
+        res.render("add", { errors: req.flash("errors") });
       });
     });
 };
@@ -39,7 +39,6 @@ exports.searchFunction = function(req, res) {
   Book.search(req.body.searchValue, req.visitorId)
     .then(books => {
       res.render("searchresults", { books: books });
-      console.log(books);
     })
     .catch(() => {
       res.json([]);
@@ -47,7 +46,7 @@ exports.searchFunction = function(req, res) {
 };
 
 // to view single book details
-exports.singleBookPage = async function(req, res) {
+exports.viewSingleBook = async function(req, res) {
   if (req.session.user) {
     try {
       let book = await Book.findBookById(req.params.id, req.visitorId); //visitorid determines if current user is owner of book - defined in server.js
@@ -63,7 +62,6 @@ exports.singleBookPage = async function(req, res) {
 exports.editPage = async function(req, res) {
   try {
     let book = await Book.findBookById(req.params.id);
-    console.log(book);
     if (book.userId == req.visitorId) {
       res.render("edit-book", { book: book });
     } else {
