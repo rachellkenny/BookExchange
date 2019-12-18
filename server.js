@@ -3,6 +3,7 @@ const app = express();
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const flash = require("connect-flash");
+var path = require("path");
 
 //configuration code for sessions -- cookie should last 1 day
 let sessionOptions = session({
@@ -40,7 +41,7 @@ app.use(express.json());
 
 // set directory for different interfaces
 app.use(express.static("public"));
-app.set("views", __dirname + "\\UIs");
+app.set("views", path.join(__dirname + "/UIs"));
 app.set("view engine", "ejs");
 
 app.use("/", router);
