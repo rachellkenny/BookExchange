@@ -38,7 +38,7 @@ exports.searchPage = function(req, res) {
 exports.searchFunction = function(req, res) {
   Book.search(req.body.searchValue, req.visitorId)
     .then(books => {
-      res.render("searchresults", { books: books });
+      res.render("searchResults", { books: books });
     })
     .catch(() => {
       res.json([]);
