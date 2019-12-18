@@ -40,7 +40,7 @@ app.use(express.json());
 
 // set directory for different interfaces
 app.use(express.static("public"));
-app.set("views", "UIs");
+app.set("views", __dirname + "/UIs");
 app.set("view engine", "ejs");
 
 app.use("/", router);
