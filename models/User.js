@@ -16,8 +16,8 @@ User.prototype.validate = async function() {
   if (!validator.isEmail(this.data.email)) {
     this.errors.push("Please enter a valid email.");
   }
-  if (!validator.contains(this.data.email, "my.brookdalecc.edu")) {
-    this.errors.push("You must use your Brookdale student email address.");
+  if (!validator.contains(this.data.email, ".edu")) {
+    this.errors.push("You must use your student email address.");
   }
   if (this.data.password == "") {
     this.errors.push("Please enter a password.");
@@ -30,13 +30,11 @@ User.prototype.validate = async function() {
   if (
     this.data.email.length > 0 &&
     validator.isEmail(this.data.email) &&
-    validator.contains((this.data.email, "my.brookdalecc.edu"))
+    validator.contains((this.data.email, ".edu"))
   ) {
     let emailExists = await usersCollection.findOne({ email: this.data.email });
     if (emailExists) {
-      {
-        this.errors.push("This email is already in use.");
-      }
+      this.errors.push("This email is already in use.");
     }
   }
 };
