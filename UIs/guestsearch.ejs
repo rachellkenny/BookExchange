@@ -1,0 +1,23 @@
+<%- include('includes/loggedOutNav') %>
+
+    <div class="container" id="add">
+      <p class="display-4">Search for Books</p>
+      <form action="/searchFunction" method="POST" id="search-book-form">
+        <div class="form-group">
+          <label for="seachValue" class="text-muted mb-1">What are you looking for?
+          <br>
+          <small>Search by ISBN, Title, Author, Subject or Course</small></label>
+          <input
+            name="searchValue"
+            id="searchValue"
+            class="form-control"
+            type="text"
+          />
+        </div>
+        <button type="submit" class="btn btn-info">
+          Search Books
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

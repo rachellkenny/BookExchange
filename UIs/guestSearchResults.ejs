@@ -1,4 +1,4 @@
-<%- include('includes/loggedInNav') %>
+<%- include('includes/loggedOutNav') %>
 
 <div class="container py-md-5 container--narrow">
   <p class="display-4">Student Book Exchange</p>
@@ -28,12 +28,7 @@
                       <th scope="col">Author</th>
                       <th scope="col">Subject</th>
                       <th scope="col">Course</th>
-                      <% if (book.isVisitorOwner) { %>
-                      <th scope="col">Update</th>
-                      <th scope="col">Delete</th>
-                      <% } else { %>
                       <th scope="col">Owner</th>
-                      <% }%>
                     </tr>
                   </thead>
                   <tbody>
@@ -42,18 +37,7 @@
                       <td><%= book.author %></td>
                       <td><%= book.subject %></td>
                       <td><%= book.course %></td>
-                      <% if (book.isVisitorOwner) { %>
-                      <td>
-                          <form action="/book/<%= book._id %>/edit" method="GET"><button class="btn btn-link"><i
-                            class="fas fa-edit"></i></button></form> </td>
-                      <td>
-                        <form action="/book/<%= book._id %>/delete" method="POST"><button class="btn btn-link text-danger"><i
-                              class="fas fa-minus-circle"></i></button></form>
-                              
-                      </td>
-                      <% } else { %>
-                      <td><a href="/profile/<%= book.user.email %>">Go to Profile</a></td>
-                      <% }%>
+                      <td><a href="/guestprofile/<%= book.user.email %>">Go to Profile</a></td>
                       </td>
                     </tr>
                   </tbody>

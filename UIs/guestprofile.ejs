@@ -1,24 +1,15 @@
-<%- include('includes/loggedInNav') %>
+<%- include('includes/loggedOutNav') %>
 
 <div class="container py-md-5 container--narrow">
   <p class="display-4">Student Book Exchange</p>
   <%- include('includes/flashalerts') %>
   <br><br>
   <h2> <%= fname %>&nbsp;<%= lname %></h2>
-
-    <% if (userid == visitorId){ %>
-      <!-- for user's own prof page -->
-  <form class="ml-2 d-inline" action="/add" method="GET">
-    <button class="btn btn-info">Add a Book</button>
-  </form>
-
-      <% } else { %>
       <!-- for someone else's prof page -->
       <p class="small"><%= email %></p><br>
       <form class="ml-2 d-inline" action="mailto: <%= email %>" method="POST">
       <button class="btn btn-info my-2">Contact <%= fname %></button><br>
     </form>
-      <% } %>
     
   <br><br>
     <h5><%= fname %>'s Books</h5>
@@ -47,11 +38,6 @@
                       <th scope="col">Author</th>
                       <th scope="col">Subject</th>
                       <th scope="col">Course</th>
-                      <!-- if current user is on own profile page, has ability to update/delete -->
-                      <% if (book.isVisitorOwner) { %>
-                      <th scope="col">Update</th>
-                      <th scope="col">Delete</th>
-                      <% } %>
                     </tr>
                   </thead>
                   <tbody>
@@ -60,16 +46,6 @@
                       <td><%= book.author %></td>
                       <td><%= book.subject %></td>
                       <td><%= book.course %></td>
-                      <!-- if current user is on own profile page, has ability to update/delete -->
-                      <% if (book.isVisitorOwner) { %>
-                      <td>
-                          <form action="/book/<%= book._id %>/edit" method="GET"><button class="btn btn-link"><i
-                            class="fas fa-edit"></i></button></form> </td>
-                      <td>
-                        <form action="/book/<%= book._id %>/delete" method="POST"><button class="btn btn-link text-danger"><i
-                              class="fas fa-minus-circle"></i></button></form>
-                      </td>
-                      <% } %>
                     </tr>
                   </tbody>
                 </table>

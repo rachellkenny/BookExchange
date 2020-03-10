@@ -31,18 +31,28 @@ exports.searchPage = function(req, res) {
   if (req.session.user) {
     res.render("search");
   } else {
-    res.render("mustbeloggedin");
+    res.render("guestsearch");
   }
 };
 
 exports.searchFunction = function(req, res) {
-  Book.search(req.body.searchValue, req.visitorId)
-    .then(books => {
-      res.render("searchResults", { books: books });
-    })
-    .catch(() => {
-      res.json([]);
-    });
+  if (req.session.user) {
+    Book.search(req.body.searchValue, req.visitorId)
+      .then(books => {
+        res.render("searchResults", { books: books });
+      })
+      .catch(() => {
+        res.json([]);
+      });
+  } else {
+    Book.search(req.body.searchValue)
+      .then(books => {
+        res.render("guestSearchResults", { books: books });
+      })
+      .catch(() => {
+        res.json([]);
+      });
+  }
 };
 
 // to view single book details

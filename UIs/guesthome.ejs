@@ -1,0 +1,22 @@
+<%- include('includes/loggedOutNav') %>
+
+<div class="container" id="home">
+ 
+
+  <%- include('includes/flashalerts') %>
+
+  <section class="jumbotron text-center">
+    <h2 class="display-4">Student Book Exchange</h2>
+    <br><br>
+      <h3 class="jumbotron-heading">Hi there!</strong></h3>
+      <p class="lead text-muted">To add your own books for exchange, please <a href="register">register</a> for a new account or <a href="login">login</a> to an existing account. In the meantime, feel free to search for books currently available from other users.</p>
+      <p>
+        <form action="/search" method="GET">
+          <button type="submit" class="btn btn-info my-2">Search for Books</button>
+        </form>
+      </p>
+    </div>
+  </section>
+</div>
+</body>
+</html>

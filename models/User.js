@@ -26,6 +26,7 @@ User.prototype.validate = async function() {
     this.errors.push("Password must be at least 6 characters.");
   }
 
+  //THIS DOESN'T WORK -- FIX IT.
   //check to see if email is in use after validation
   if (
     this.data.email.length > 0 &&
@@ -42,7 +43,8 @@ User.prototype.validate = async function() {
 User.prototype.register = function() {
   //check for validation errors, if there are no errors, save user data to database
   this.validate();
-  if (this.errors.length == 0) {
+  console.log(this.errors);
+  if (this.errors.length === 0) {
     //hash password with bcrypt
     let salt = bcrypt.genSaltSync(10);
     this.data.password = bcrypt.hashSync(this.data.password, salt);

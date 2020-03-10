@@ -12,6 +12,10 @@ exports.landing = function(req, res) {
   }
 };
 
+exports.guest = function(req, res) {
+  res.render("guesthome");
+};
+
 exports.registerPage = function(req, res) {
   res.render("register", { regErrors: req.flash("regErrors") });
 };
@@ -100,18 +104,35 @@ exports.ifUserExists = function(req, res, next) {
 
 exports.profileScreen = function(req, res) {
   //find books by user id to display personal inventory
-  Book.findBooksByUserId(req.profileUser.userid, req.visitorId)
-    .then(function(books) {
-      res.render("profile", {
-        books: books,
-        fname: req.profileUser.fname,
-        lname: req.profileUser.lname,
-        email: req.profileUser.email,
-        userid: req.profileUser.userid,
-        visitorId: req.visitorId
+  if (req.session.user) {
+    Book.findBooksByUserId(req.profileUser.userid, req.visitorId)
+      .then(function(books) {
+        res.render("profile", {
+          books: books,
+          fname: req.profileUser.fname,
+          lname: req.profileUser.lname,
+          email: req.profileUser.email,
+          userid: req.profileUser.userid,
+          visitorId: req.visitorId
+        });
+      })
+      .catch(function() {
+        res.render("404");
       });
-    })
-    .catch(function() {
-      res.render("404");
-    });
+  } else {
+    Book.findBooksByUserId(req.profileUser.userid)
+      .then(function(books) {
+        res.render("guestprofile", {
+          books: books,
+          fname: req.profileUser.fname,
+          lname: req.profileUser.lname,
+          email: req.profileUser.email,
+          userid: req.profileUser.userid,
+          visitorId: req.visitorId
+        });
+      })
+      .catch(function() {
+        res.render("404");
+      });
+  }
 };

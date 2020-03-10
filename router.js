@@ -5,10 +5,16 @@ const bookController = require("./controllers/bookController");
 
 //get requests for user pages
 router.get("/", userController.landing);
+router.get("/guest", userController.guest);
 router.get("/register", userController.registerPage);
 router.get("/login", userController.loginPage);
 router.get(
   "/profile/:email",
+  userController.ifUserExists,
+  userController.profileScreen
+);
+router.get(
+  "/guestprofile/:email",
   userController.ifUserExists,
   userController.profileScreen
 );
